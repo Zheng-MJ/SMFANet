@@ -1,9 +1,6 @@
-# 导入必要的库
 import torch
 import torch_tensorrt
 import os.path as osp
-import os
-from tqdm import tqdm
 import cv2
 from SMFANet import SMFANet
 

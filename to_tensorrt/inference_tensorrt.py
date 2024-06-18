@@ -1,10 +1,6 @@
-# 导入必要的库
 import torch
-import torch_tensorrt
 import torchvision.models as models
 import os.path as osp
-import os
-from tqdm import tqdm
 import cv2
 import numpy as np
 

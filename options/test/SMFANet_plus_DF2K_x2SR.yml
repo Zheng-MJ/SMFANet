@@ -1,0 +1,86 @@
+# general settings
+name: SMFAN_plus_x2
+model_type: SRModel
+scale: 2
+num_gpu: 1
+manual_seed: 0
+
+datasets:
+  test_1:  # the 1st test dataset
+    name: val_set5
+    type: PairedImageDataset
+    dataroot_gt: /datasets/Set5/HR
+    dataroot_lq: /datasets/Set5/LR_bicubic/X2
+    filename_tmpl : "{}x2"
+    io_backend:
+      type: disk
+
+  test_2:  # the 1st test dataset
+    name: val_set14
+    type: PairedImageDataset
+    dataroot_gt: /datasets/Set14/HR
+    dataroot_lq: /datasets/Set14/LR_bicubic/X2
+    filename_tmpl : "{}x2"
+    io_backend:
+      type: disk
+
+  test_3:  # the 1st test dataset
+    name: val_B100
+    type: PairedImageDataset
+    dataroot_gt: /datasets/B100/HR
+    dataroot_lq: /datasets/B100/LR_bicubic/X2
+    filename_tmpl : "{}x2"
+    io_backend:
+      type: disk
+
+  test_4:  # the 1st test dataset
+    name: val_Urban100
+    type: PairedImageDataset
+    dataroot_gt: /datasets/Urban100/HR
+    dataroot_lq: /datasets/Urban100/LR_bicubic/X2
+    filename_tmpl : "{}x2"
+    io_backend:
+      type: disk
+
+  test_5:  # the 1st test dataset
+    name: val_Manga109
+    type: PairedImageDataset
+    dataroot_gt: /datasets/Manga109/HR
+    dataroot_lq: /datasets/Manga109/LR_bicubic/X2
+    filename_tmpl : "{}x2"
+    io_backend:
+      type: disk
+
+
+# network structures
+network_g:
+  type: SMFANet
+  dim: 48
+  n_blocks: 12
+  ffn_scale: 2
+  upscaling_factor: 2
+
+
+
+# path# path
+path:
+  pretrain_network_g: pretrain/SMFANet_plus_DF2K_100w_x2SR.pth
+  strict_load_g: true
+  param_key: ~
+# validation settings
+
+val:
+  save_img: false
+  flip_seq: true
+  center_frame_only: true
+  suffix: ~  # add suffix to saved images, if None, use exp name
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 2
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim
+      crop_border: 2
+      test_y_channel: true

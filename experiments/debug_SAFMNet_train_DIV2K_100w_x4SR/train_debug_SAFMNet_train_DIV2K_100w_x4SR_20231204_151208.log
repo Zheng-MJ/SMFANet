@@ -1,0 +1,481 @@
+2023-12-04 15:12:08,477 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.2
+	PyTorch: 2.0.0
+	TorchVision: 0.15.0
+2023-12-04 15:12:08,477 INFO: 
+  name: debug_SAFMNet_train_DIV2K_100w_x4SR
+  model_type: SRModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 10
+  datasets:[
+    train:[
+      name: DIV2K
+      type: PairedImageDataset
+      dataroot_gt: /data1/zhengmingjun/DIV2K/DIV2K_train_HR_sub
+      dataroot_lq: /data1/zhengmingjun/DIV2K/DIV2K_train_LR_bicubic/X4_sub
+      filename_tmpl: {}
+      io_backend:[
+        type: disk
+      ]
+      gt_size: 256
+      use_hflip: True
+      use_rot: True
+      use_shuffle: True
+      num_worker_per_gpu: 8
+      batch_size_per_gpu: 64
+      dataset_enlarge_ratio: 10
+      prefetch_mode: None
+      phase: train
+      scale: 4
+    ]
+    val:[
+      name: Set5
+      type: PairedImageDataset
+      dataroot_gt: /data0/zhengmingjun/Benchmarks/Set5/HR
+      dataroot_lq: /data0/zhengmingjun/Benchmarks/Set5/LR_bicubic/X4
+      filename_tmpl: {}x4
+      io_backend:[
+        type: disk
+      ]
+      phase: val
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: SMFANet
+    dim: 36
+    n_blocks: 8
+    ffn_scale: 2
+    upscaling_factor: 4
+  ]
+  path:[
+    pretrain_network_g: None
+    strict_load_g: False
+    resume_state: None
+    experiments_root: /data1/zhengmingjun/SMFANet/experiments/debug_SAFMNet_train_DIV2K_100w_x4SR
+    models: /data1/zhengmingjun/SMFANet/experiments/debug_SAFMNet_train_DIV2K_100w_x4SR/models
+    training_states: /data1/zhengmingjun/SMFANet/experiments/debug_SAFMNet_train_DIV2K_100w_x4SR/training_states
+    log: /data1/zhengmingjun/SMFANet/experiments/debug_SAFMNet_train_DIV2K_100w_x4SR
+    visualization: /data1/zhengmingjun/SMFANet/experiments/debug_SAFMNet_train_DIV2K_100w_x4SR/visualization
+  ]
+  train:[
+    ema_decay: 0.999
+    optim_g:[
+      type: Adam
+      lr: 0.001
+      weight_decay: 0
+      betas: [0.9, 0.99]
+    ]
+    scheduler:[
+      type: CosineAnnealingRestartLR
+      periods: [1000000]
+      restart_weights: [1]
+      eta_min: 1e-06
+    ]
+    total_iter: 1000000
+    warmup_iter: -1
+    pixel_opt:[
+      type: L1Loss
+      loss_weight: 1.0
+      reduction: mean
+    ]
+    fft_opt:[
+      type: FFTLoss
+      loss_weight: 0.05
+      reduction: mean
+    ]
+  ]
+  val:[
+    val_freq: 8
+    save_img: False
+    pbar: False
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: True
+        better: higher
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: True
+        better: higher
+      ]
+    ]
+  ]
+  logger:[
+    print_freq: 1
+    save_checkpoint_freq: 8
+    use_tb_logger: True
+    wandb:[
+      project: None
+      resume_id: None
+    ]
+  ]
+  dist_params:[
+    backend: nccl
+    port: 29500
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: True
+  root_path: /data1/zhengmingjun/SMFANet
+
+2023-12-04 15:12:15,322 INFO: Dataset [PairedImageDataset] - DIV2K is built.
+2023-12-04 15:12:15,322 INFO: Training statistics:
+	Number of train images: 32592
+	Dataset enlarge ratio: 10
+	Batch size per gpu: 64
+	World size (gpu number): 1
+	Require iter number per epoch: 5093
+	Total epochs: 197; iters: 1000000.
+2023-12-04 15:12:15,322 INFO: Dataset [PairedImageDataset] - Set5 is built.
+2023-12-04 15:12:15,322 INFO: Number of val images/folders in Set5: 5
+2023-12-04 15:12:15,358 INFO: Network [SMFANet] is created.
+2023-12-04 15:12:15,548 INFO: Network: SMFANet, with parameters: 197,328
+2023-12-04 15:12:15,549 INFO: SMFANet(
+  (to_feat): Conv2d(3, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (feats): Sequential(
+    (0): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (1): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (2): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (3): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (4): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (5): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (6): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (7): FMB(
+      (smfa): SMFA(
+        (linear_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (linear_1): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (linear_2): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (lde): DMlp(
+          (conv_0): Sequential(
+            (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (act): GELU(approximate='none')
+          (conv_1): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (dw_conv): Conv2d(36, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=36)
+        (gelu): GELU(approximate='none')
+      )
+      (pcfn): PCFN(
+        (conv_0): Conv2d(36, 72, kernel_size=(1, 1), stride=(1, 1))
+        (conv_1): Conv2d(18, 18, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (act): GELU(approximate='none')
+        (conv_2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (to_img): Sequential(
+    (0): Conv2d(36, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): PixelShuffle(upscale_factor=4)
+  )
+)
+2023-12-04 15:12:15,549 INFO: Use Exponential Moving Average with decay: 0.999
+2023-12-04 15:12:15,559 INFO: Network [SMFANet] is created.
+2023-12-04 15:12:15,579 INFO: Loss [L1Loss] is created.
+2023-12-04 15:12:15,580 INFO: Loss [FFTLoss] is created.
+2023-12-04 15:12:15,580 INFO: Model [SRModel] is created.
+2023-12-04 15:12:15,709 INFO: Start training from epoch: 0, iter: 0
+2023-12-04 15:12:17,417 INFO: [debug..][epoch:  0, iter:       1, lr:(1.000e-03,)] [eta: 0:01:04, time (data): 1.706 (0.787)] l_pix: 4.7016e-01 f_pix: 6.8678e-01 
+2023-12-04 15:12:17,537 INFO: [debug..][epoch:  0, iter:       2, lr:(1.000e-03,)] [eta: 11:07:08, time (data): 0.913 (0.399)] l_pix: 3.5117e-01 f_pix: 6.6488e-01 
+2023-12-04 15:12:17,638 INFO: [debug..][epoch:  0, iter:       3, lr:(1.000e-03,)] [eta: 15:20:43, time (data): 0.642 (0.270)] l_pix: 2.4459e-01 f_pix: 6.0161e-01 
+2023-12-04 15:12:17,737 INFO: [debug..][epoch:  0, iter:       4, lr:(1.000e-03,)] [eta: 17:48:53, time (data): 0.506 (0.205)] l_pix: 1.7472e-01 f_pix: 5.8309e-01 
+2023-12-04 15:12:17,848 INFO: [debug..][epoch:  0, iter:       5, lr:(1.000e-03,)] [eta: 19:58:37, time (data): 0.427 (0.166)] l_pix: 1.4727e-01 f_pix: 5.1184e-01 
+2023-12-04 15:12:17,946 INFO: [debug..][epoch:  0, iter:       6, lr:(1.000e-03,)] [eta: 21:00:22, time (data): 0.372 (0.140)] l_pix: 1.2908e-01 f_pix: 5.6858e-01 
+2023-12-04 15:12:18,041 INFO: [debug..][epoch:  0, iter:       7, lr:(1.000e-03,)] [eta: 21:39:57, time (data): 0.332 (0.121)] l_pix: 1.1508e-01 f_pix: 5.0854e-01 
+2023-12-04 15:12:18,137 INFO: [debug..][epoch:  0, iter:       8, lr:(1.000e-03,)] [eta: 22:15:02, time (data): 0.303 (0.107)] l_pix: 1.0401e-01 f_pix: 4.2829e-01 
+2023-12-04 15:12:18,138 INFO: Saving models and training states.
+2023-12-04 15:12:19,110 INFO: Validation Set5
+	 # psnr: 9.1575	Best: 9.1575 @ 8 iter
+	 # ssim: 0.0602	Best: 0.0602 @ 8 iter
+
+2023-12-04 15:12:19,231 INFO: [debug..][epoch:  0, iter:       9, lr:(1.000e-03,)] [eta: 2 days, 2:24:39, time (data): 0.283 (0.097)] l_pix: 1.0955e-01 f_pix: 4.6949e-01 
+2023-12-04 15:12:19,327 INFO: [debug..][epoch:  0, iter:      10, lr:(1.000e-03,)] [eta: 2 days, 0:14:58, time (data): 0.264 (0.088)] l_pix: 1.0505e-01 f_pix: 4.5782e-01 
+2023-12-04 15:12:19,429 INFO: [debug..][epoch:  0, iter:      11, lr:(1.000e-03,)] [eta: 1 day, 22:34:48, time (data): 0.249 (0.081)] l_pix: 9.9776e-02 f_pix: 4.4912e-01 
+2023-12-04 15:12:19,527 INFO: [debug..][epoch:  0, iter:      12, lr:(1.000e-03,)] [eta: 1 day, 21:05:37, time (data): 0.237 (0.075)] l_pix: 1.0072e-01 f_pix: 4.2636e-01 
+2023-12-04 15:12:19,626 INFO: [debug..][epoch:  0, iter:      13, lr:(1.000e-03,)] [eta: 1 day, 19:50:33, time (data): 0.226 (0.070)] l_pix: 8.4663e-02 f_pix: 3.6880e-01 
+2023-12-04 15:12:19,723 INFO: [debug..][epoch:  0, iter:      14, lr:(1.000e-03,)] [eta: 1 day, 18:42:54, time (data): 0.217 (0.066)] l_pix: 8.0293e-02 f_pix: 3.7349e-01 
+2023-12-04 15:12:19,819 INFO: [debug..][epoch:  0, iter:      15, lr:(1.000e-03,)] [eta: 1 day, 17:42:38, time (data): 0.209 (0.062)] l_pix: 7.6787e-02 f_pix: 4.4345e-01 
+2023-12-04 15:12:19,915 INFO: [debug..][epoch:  0, iter:      16, lr:(1.000e-03,)] [eta: 1 day, 16:49:40, time (data): 0.202 (0.059)] l_pix: 7.8839e-02 f_pix: 4.2462e-01 
+2023-12-04 15:12:19,916 INFO: Saving models and training states.
+2023-12-04 15:12:20,468 INFO: Validation Set5
+	 # psnr: 9.2010	Best: 9.2010 @ 16 iter
+	 # ssim: 0.0609	Best: 0.0609 @ 16 iter
+
+2023-12-04 15:12:20,587 INFO: [debug..][epoch:  0, iter:      17, lr:(1.000e-03,)] [eta: 2 days, 0:55:52, time (data): 0.197 (0.056)] l_pix: 7.4729e-02 f_pix: 4.1802e-01 
+2023-12-04 15:12:20,689 INFO: [debug..][epoch:  0, iter:      18, lr:(1.000e-03,)] [eta: 1 day, 23:50:11, time (data): 0.191 (0.053)] l_pix: 7.4116e-02 f_pix: 3.8783e-01 
+2023-12-04 15:12:20,798 INFO: [debug..][epoch:  0, iter:      19, lr:(1.000e-03,)] [eta: 1 day, 22:57:50, time (data): 0.187 (0.052)] l_pix: 7.1596e-02 f_pix: 3.9370e-01 
+2023-12-04 15:12:20,898 INFO: [debug..][epoch:  0, iter:      20, lr:(1.000e-03,)] [eta: 1 day, 22:03:23, time (data): 0.183 (0.049)] l_pix: 6.4528e-02 f_pix: 3.4789e-01 
+2023-12-04 15:12:21,004 INFO: [debug..][epoch:  0, iter:      21, lr:(1.000e-03,)] [eta: 1 day, 21:17:43, time (data): 0.179 (0.048)] l_pix: 6.3891e-02 f_pix: 3.6052e-01 
+2023-12-04 15:12:21,105 INFO: [debug..][epoch:  0, iter:      22, lr:(1.000e-03,)] [eta: 1 day, 20:32:27, time (data): 0.175 (0.046)] l_pix: 6.5436e-02 f_pix: 3.8194e-01 
+2023-12-04 15:12:21,203 INFO: [debug..][epoch:  0, iter:      23, lr:(1.000e-03,)] [eta: 1 day, 19:49:17, time (data): 0.172 (0.044)] l_pix: 6.2245e-02 f_pix: 3.6615e-01 
+2023-12-04 15:12:21,298 INFO: [debug..][epoch:  0, iter:      24, lr:(1.000e-03,)] [eta: 1 day, 19:07:34, time (data): 0.169 (0.043)] l_pix: 6.4115e-02 f_pix: 3.8882e-01 
+2023-12-04 15:12:21,298 INFO: Saving models and training states.
+2023-12-04 15:12:21,800 INFO: Validation Set5
+	 # psnr: 9.2534	Best: 9.2534 @ 24 iter
+	 # ssim: 0.0617	Best: 0.0617 @ 24 iter
+
+2023-12-04 15:12:21,918 INFO: [debug..][epoch:  0, iter:      25, lr:(1.000e-03,)] [eta: 2 days, 0:05:46, time (data): 0.167 (0.042)] l_pix: 6.2650e-02 f_pix: 3.8996e-01 
+2023-12-04 15:12:22,018 INFO: [debug..][epoch:  0, iter:      26, lr:(1.000e-03,)] [eta: 1 day, 23:20:20, time (data): 0.164 (0.040)] l_pix: 6.7484e-02 f_pix: 3.9196e-01 
+2023-12-04 15:12:22,125 INFO: [debug..][epoch:  0, iter:      27, lr:(1.000e-03,)] [eta: 1 day, 22:42:35, time (data): 0.162 (0.040)] l_pix: 5.7395e-02 f_pix: 3.3136e-01 
+2023-12-04 15:12:22,225 INFO: [debug..][epoch:  0, iter:      28, lr:(1.000e-03,)] [eta: 1 day, 22:03:34, time (data): 0.160 (0.039)] l_pix: 5.7944e-02 f_pix: 3.3918e-01 
+2023-12-04 15:12:22,326 INFO: [debug..][epoch:  0, iter:      29, lr:(1.000e-03,)] [eta: 1 day, 21:27:25, time (data): 0.158 (0.038)] l_pix: 5.6075e-02 f_pix: 3.6413e-01 
+2023-12-04 15:12:22,424 INFO: [debug..][epoch:  0, iter:      30, lr:(1.000e-03,)] [eta: 1 day, 20:51:50, time (data): 0.156 (0.037)] l_pix: 4.7855e-02 f_pix: 2.9975e-01 
+2023-12-04 15:12:22,522 INFO: [debug..][epoch:  0, iter:      31, lr:(1.000e-03,)] [eta: 1 day, 20:18:50, time (data): 0.154 (0.036)] l_pix: 5.7683e-02 f_pix: 3.7287e-01 
+2023-12-04 15:12:22,617 INFO: [debug..][epoch:  0, iter:      32, lr:(1.000e-03,)] [eta: 1 day, 19:46:29, time (data): 0.152 (0.035)] l_pix: 5.8363e-02 f_pix: 3.6314e-01 
+2023-12-04 15:12:22,617 INFO: Saving models and training states.
+2023-12-04 15:12:23,135 INFO: Validation Set5
+	 # psnr: 9.3103	Best: 9.3103 @ 32 iter
+	 # ssim: 0.0627	Best: 0.0627 @ 32 iter
+
+2023-12-04 15:12:23,251 INFO: [debug..][epoch:  0, iter:      33, lr:(1.000e-03,)] [eta: 1 day, 23:40:04, time (data): 0.151 (0.034)] l_pix: 5.1463e-02 f_pix: 3.1746e-01 
+2023-12-04 15:12:23,351 INFO: [debug..][epoch:  0, iter:      34, lr:(1.000e-03,)] [eta: 1 day, 23:05:50, time (data): 0.149 (0.034)] l_pix: 4.7160e-02 f_pix: 3.0341e-01 
+2023-12-04 15:12:23,459 INFO: [debug..][epoch:  0, iter:      35, lr:(1.000e-03,)] [eta: 1 day, 22:37:08, time (data): 0.148 (0.033)] l_pix: 5.2366e-02 f_pix: 2.7830e-01 
+2023-12-04 15:12:23,556 INFO: [debug..][epoch:  0, iter:      36, lr:(1.000e-03,)] [eta: 1 day, 22:05:15, time (data): 0.147 (0.032)] l_pix: 5.1702e-02 f_pix: 3.3160e-01 
+2023-12-04 15:12:23,654 INFO: [debug..][epoch:  0, iter:      37, lr:(1.000e-03,)] [eta: 1 day, 21:35:33, time (data): 0.145 (0.032)] l_pix: 5.4189e-02 f_pix: 3.2999e-01 
+2023-12-04 15:12:23,752 INFO: [debug..][epoch:  0, iter:      38, lr:(1.000e-03,)] [eta: 1 day, 21:07:14, time (data): 0.144 (0.031)] l_pix: 5.2866e-02 f_pix: 3.0642e-01 
+2023-12-04 15:12:23,848 INFO: [debug..][epoch:  0, iter:      39, lr:(1.000e-03,)] [eta: 1 day, 20:39:39, time (data): 0.143 (0.031)] l_pix: 4.1013e-02 f_pix: 2.6894e-01 
+2023-12-04 15:12:23,944 INFO: [debug..][epoch:  0, iter:      40, lr:(1.000e-03,)] [eta: 1 day, 20:13:18, time (data): 0.142 (0.030)] l_pix: 5.0568e-02 f_pix: 3.0590e-01 
+2023-12-04 15:12:23,944 INFO: Saving models and training states.
+2023-12-04 15:12:24,460 INFO: Validation Set5
+	 # psnr: 9.3706	Best: 9.3706 @ 40 iter
+	 # ssim: 0.0637	Best: 0.0637 @ 40 iter
+
+2023-12-04 15:12:24,586 INFO: [debug..][epoch:  0, iter:      41, lr:(1.000e-03,)] [eta: 1 day, 23:24:43, time (data): 0.141 (0.030)] l_pix: 4.8114e-02 f_pix: 2.8896e-01 
+2023-12-04 15:12:24,689 INFO: [debug..][epoch:  0, iter:      42, lr:(1.000e-03,)] [eta: 1 day, 22:58:32, time (data): 0.140 (0.029)] l_pix: 4.7160e-02 f_pix: 3.2281e-01 
+2023-12-04 15:12:24,800 INFO: [debug..][epoch:  0, iter:      43, lr:(1.000e-03,)] [eta: 1 day, 22:36:41, time (data): 0.140 (0.029)] l_pix: 5.1183e-02 f_pix: 3.1707e-01 
+2023-12-04 15:12:24,896 INFO: [debug..][epoch:  0, iter:      44, lr:(1.000e-03,)] [eta: 1 day, 22:10:14, time (data): 0.139 (0.029)] l_pix: 4.2066e-02 f_pix: 2.8115e-01 
+2023-12-04 15:12:25,002 INFO: [debug..][epoch:  0, iter:      45, lr:(1.000e-03,)] [eta: 1 day, 21:48:16, time (data): 0.138 (0.028)] l_pix: 4.7260e-02 f_pix: 3.3594e-01 
+2023-12-04 15:12:25,107 INFO: [debug..][epoch:  0, iter:      46, lr:(1.000e-03,)] [eta: 1 day, 21:26:49, time (data): 0.137 (0.028)] l_pix: 4.5528e-02 f_pix: 2.9737e-01 
+2023-12-04 15:12:25,210 INFO: [debug..][epoch:  0, iter:      47, lr:(1.000e-03,)] [eta: 1 day, 21:05:58, time (data): 0.137 (0.028)] l_pix: 4.2312e-02 f_pix: 3.0142e-01 
+2023-12-04 15:12:25,308 INFO: [debug..][epoch:  0, iter:      48, lr:(1.000e-03,)] [eta: 1 day, 20:43:56, time (data): 0.136 (0.027)] l_pix: 4.3784e-02 f_pix: 3.2358e-01 
+2023-12-04 15:12:25,308 INFO: Saving models and training states.
+2023-12-04 15:12:25,843 INFO: Validation Set5
+	 # psnr: 9.4343	Best: 9.4343 @ 48 iter
+	 # ssim: 0.0649	Best: 0.0649 @ 48 iter
+
+2023-12-04 15:12:25,966 INFO: [debug..][epoch:  0, iter:      49, lr:(1.000e-03,)] [eta: 1 day, 23:29:50, time (data): 0.135 (0.027)] l_pix: 4.3280e-02 f_pix: 3.2170e-01 
+2023-12-04 15:12:26,077 INFO: [debug..][epoch:  0, iter:      50, lr:(1.000e-03,)] [eta: 1 day, 23:10:07, time (data): 0.135 (0.026)] l_pix: 4.1269e-02 f_pix: 2.8824e-01 
+2023-12-04 15:12:26,190 INFO: [debug..][epoch:  0, iter:      51, lr:(1.000e-03,)] [eta: 1 day, 22:51:43, time (data): 0.135 (0.026)] l_pix: 4.4663e-02 f_pix: 3.1237e-01 
+2023-12-04 15:12:26,289 INFO: [debug..][epoch:  0, iter:      52, lr:(1.000e-03,)] [eta: 1 day, 22:29:50, time (data): 0.134 (0.026)] l_pix: 4.5218e-02 f_pix: 3.1367e-01 
+2023-12-04 15:12:26,387 INFO: [debug..][epoch:  0, iter:      53, lr:(1.000e-03,)] [eta: 1 day, 22:08:34, time (data): 0.133 (0.026)] l_pix: 3.8573e-02 f_pix: 2.7860e-01 
+2023-12-04 15:12:26,487 INFO: [debug..][epoch:  0, iter:      54, lr:(1.000e-03,)] [eta: 1 day, 21:48:23, time (data): 0.133 (0.025)] l_pix: 3.8974e-02 f_pix: 2.8876e-01 
+2023-12-04 15:12:26,591 INFO: [debug..][epoch:  0, iter:      55, lr:(1.000e-03,)] [eta: 1 day, 21:30:15, time (data): 0.132 (0.025)] l_pix: 3.7891e-02 f_pix: 2.8950e-01 
+2023-12-04 15:12:26,693 INFO: [debug..][epoch:  0, iter:      56, lr:(1.000e-03,)] [eta: 1 day, 21:12:14, time (data): 0.131 (0.025)] l_pix: 3.5331e-02 f_pix: 2.7171e-01 
+2023-12-04 15:12:26,693 INFO: Saving models and training states.
+2023-12-04 15:12:27,214 INFO: Validation Set5
+	 # psnr: 9.5002	Best: 9.5002 @ 56 iter
+	 # ssim: 0.0662	Best: 0.0662 @ 56 iter
+
+2023-12-04 15:12:27,340 INFO: [debug..][epoch:  0, iter:      57, lr:(1.000e-03,)] [eta: 1 day, 23:31:16, time (data): 0.131 (0.025)] l_pix: 3.9852e-02 f_pix: 3.0904e-01 
+2023-12-04 15:12:27,445 INFO: [debug..][epoch:  0, iter:      58, lr:(1.000e-03,)] [eta: 1 day, 23:12:38, time (data): 0.131 (0.024)] l_pix: 4.4473e-02 f_pix: 3.1623e-01 
+2023-12-04 15:12:27,555 INFO: [debug..][epoch:  0, iter:      59, lr:(1.000e-03,)] [eta: 1 day, 22:55:56, time (data): 0.131 (0.024)] l_pix: 4.0625e-02 f_pix: 3.0874e-01 
+2023-12-04 15:12:27,651 INFO: [debug..][epoch:  0, iter:      60, lr:(1.000e-03,)] [eta: 1 day, 22:36:07, time (data): 0.130 (0.024)] l_pix: 3.5794e-02 f_pix: 2.8886e-01 
+2023-12-04 15:12:27,748 INFO: [debug..][epoch:  0, iter:      61, lr:(1.000e-03,)] [eta: 1 day, 22:17:00, time (data): 0.129 (0.024)] l_pix: 4.2728e-02 f_pix: 3.2860e-01 
+2023-12-04 15:12:27,847 INFO: [debug..][epoch:  0, iter:      62, lr:(1.000e-03,)] [eta: 1 day, 21:59:19, time (data): 0.129 (0.024)] l_pix: 3.8726e-02 f_pix: 2.9404e-01 
+2023-12-04 15:12:27,945 INFO: [debug..][epoch:  0, iter:      63, lr:(1.000e-03,)] [eta: 1 day, 21:41:44, time (data): 0.128 (0.023)] l_pix: 4.3031e-02 f_pix: 3.2195e-01 
+2023-12-04 15:12:28,043 INFO: [debug..][epoch:  0, iter:      64, lr:(1.000e-03,)] [eta: 1 day, 21:24:32, time (data): 0.128 (0.023)] l_pix: 3.7614e-02 f_pix: 2.8495e-01 
+2023-12-04 15:12:28,043 INFO: Saving models and training states.
+2023-12-04 15:12:28,556 INFO: Validation Set5
+	 # psnr: 9.5682	Best: 9.5682 @ 64 iter
+	 # ssim: 0.0675	Best: 0.0675 @ 64 iter
+
+2023-12-04 15:12:28,681 INFO: [debug..][epoch:  0, iter:      65, lr:(1.000e-03,)] [eta: 1 day, 23:24:27, time (data): 0.128 (0.023)] l_pix: 3.9439e-02 f_pix: 2.9371e-01 
+2023-12-04 15:12:28,785 INFO: [debug..][epoch:  0, iter:      66, lr:(1.000e-03,)] [eta: 1 day, 23:07:39, time (data): 0.128 (0.023)] l_pix: 4.2680e-02 f_pix: 3.1056e-01 
+2023-12-04 15:12:28,896 INFO: [debug..][epoch:  0, iter:      67, lr:(1.000e-03,)] [eta: 1 day, 22:53:30, time (data): 0.127 (0.023)] l_pix: 3.6704e-02 f_pix: 2.8461e-01 
+2023-12-04 15:12:28,995 INFO: [debug..][epoch:  0, iter:      68, lr:(1.000e-03,)] [eta: 1 day, 22:36:37, time (data): 0.127 (0.023)] l_pix: 3.8887e-02 f_pix: 2.8802e-01 
+2023-12-04 15:12:29,093 INFO: [debug..][epoch:  0, iter:      69, lr:(1.000e-03,)] [eta: 1 day, 22:19:48, time (data): 0.126 (0.022)] l_pix: 3.9273e-02 f_pix: 3.0173e-01 
+2023-12-04 15:12:29,191 INFO: [debug..][epoch:  0, iter:      70, lr:(1.000e-03,)] [eta: 1 day, 22:03:50, time (data): 0.126 (0.022)] l_pix: 3.8582e-02 f_pix: 2.8672e-01 
+2023-12-04 15:12:29,292 INFO: [debug..][epoch:  0, iter:      71, lr:(1.000e-03,)] [eta: 1 day, 21:48:43, time (data): 0.126 (0.022)] l_pix: 3.9071e-02 f_pix: 2.6965e-01 
+2023-12-04 15:12:29,393 INFO: [debug..][epoch:  0, iter:      72, lr:(1.000e-03,)] [eta: 1 day, 21:34:14, time (data): 0.125 (0.022)] l_pix: 4.1356e-02 f_pix: 2.8404e-01 
+2023-12-04 15:12:29,394 INFO: Saving models and training states.
+2023-12-04 15:12:29,873 INFO: Validation Set5
+	 # psnr: 9.6381	Best: 9.6381 @ 72 iter
+	 # ssim: 0.0690	Best: 0.0690 @ 72 iter
+
+2023-12-04 15:12:30,007 INFO: [debug..][epoch:  0, iter:      73, lr:(1.000e-03,)] [eta: 1 day, 23:15:28, time (data): 0.125 (0.022)] l_pix: 3.5829e-02 f_pix: 2.7073e-01 
+2023-12-04 15:12:30,114 INFO: [debug..][epoch:  0, iter:      74, lr:(1.000e-03,)] [eta: 1 day, 23:01:26, time (data): 0.125 (0.022)] l_pix: 3.2441e-02 f_pix: 2.6101e-01 
+2023-12-04 15:12:30,224 INFO: [debug..][epoch:  0, iter:      75, lr:(1.000e-03,)] [eta: 1 day, 22:48:27, time (data): 0.125 (0.022)] l_pix: 3.5920e-02 f_pix: 2.9343e-01 
+2023-12-04 15:12:30,326 INFO: [debug..][epoch:  0, iter:      76, lr:(1.000e-03,)] [eta: 1 day, 22:34:08, time (data): 0.125 (0.022)] l_pix: 3.5341e-02 f_pix: 2.7989e-01 
+2023-12-04 15:12:30,425 INFO: [debug..][epoch:  0, iter:      77, lr:(1.000e-03,)] [eta: 1 day, 22:19:23, time (data): 0.124 (0.021)] l_pix: 4.0646e-02 f_pix: 2.8752e-01 
+2023-12-04 15:12:30,526 INFO: [debug..][epoch:  0, iter:      78, lr:(1.000e-03,)] [eta: 1 day, 22:05:31, time (data): 0.124 (0.021)] l_pix: 4.1284e-02 f_pix: 3.0066e-01 
+2023-12-04 15:12:30,626 INFO: [debug..][epoch:  0, iter:      79, lr:(1.000e-03,)] [eta: 1 day, 21:51:49, time (data): 0.124 (0.021)] l_pix: 3.3400e-02 f_pix: 2.5304e-01 
+2023-12-04 15:12:30,728 INFO: [debug..][epoch:  0, iter:      80, lr:(1.000e-03,)] [eta: 1 day, 21:38:50, time (data): 0.123 (0.021)] l_pix: 4.2617e-02 f_pix: 3.2675e-01 
+2023-12-04 15:12:30,729 INFO: Saving models and training states.
+2023-12-04 15:12:31,228 INFO: Validation Set5
+	 # psnr: 9.7093	Best: 9.7093 @ 80 iter
+	 # ssim: 0.0704	Best: 0.0704 @ 80 iter
+
+2023-12-04 15:12:31,351 INFO: [debug..][epoch:  0, iter:      81, lr:(1.000e-03,)] [eta: 1 day, 23:11:57, time (data): 0.123 (0.021)] l_pix: 4.5779e-02 f_pix: 3.2230e-01 

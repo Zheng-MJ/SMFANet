@@ -89,6 +89,7 @@ python basicsr/test.py -opt options/test/SAFMN/test_benchmark_x4.yml
 <img width="800" src="./figs/FFT_results.png">
 ### Citation
 If this work is helpful for your research, please consider citing the following BibTeX entry.
+
 ```
 @inproceedings{smfanet,
     title={SMFANet: A Lightweight Self-Modulation Feature Aggregation Network for Efficient Image Super-Resolution},

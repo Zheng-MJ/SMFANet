@@ -86,7 +86,7 @@ python basicsr/test.py -opt options/test/SMFANet_DF2K_x2SR.yml
 - **Comparison of local attribution maps (LAMs) and diffusion indices (DIs)**
 <img width="800" src="./figs/LAM_results.png">
 
-- **The power spectral density (PSD) visualizations of feature $F_{in}$, $X_l$, $Y_d$.**
+- **The power spectral density (PSD) visualizations of feature**
 <img width="800" src="./figs/FFT_results.png">
 ### Citation
 If this work is helpful for your research, please consider citing the following BibTeX entry.

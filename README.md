@@ -2,10 +2,10 @@
 <!-- > <a href="https://colab.research.google.com/drive/19DdsNFeOYR8om8QCCi9WWzr_WkWTLHZd?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
 [![OpenXLab](https://img.shields.io/badge/Demo-%F0%9F%90%BC%20OpenXLab-blue)](https://openxlab.org.cn/apps/detail/Melokyyy/SAFMN)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=sunny2109/SAFMN)
-[![GitHub Stars](https://img.shields.io/github/stars/sunny2109/SAFMN?style=social)](https://github.com/sunny2109/SAFMN) <br>
+[![GitHub Stars](https://img.shields.io/github/stars/sunny2109/SAFMN?style=social)](https://github.com/sunny2109/SAFMN) <br> -->
 > [[Paper](https://openaccess.thecvf.com/content/ICCV2023/papers/Sun_Spatially-Adaptive_Feature_Modulation_for_Efficient_Image_Super-Resolution_ICCV_2023_paper.pdf)] &emsp;
 [[Supp](https://openaccess.thecvf.com/content/ICCV2023/supplemental/Sun_Spatially-Adaptive_Feature_Modulation_ICCV_2023_supplemental.pdf)]  &emsp;
-[[Poster](https://github.com/sunny2109/SAFMN/blob/main/figs/poster_iccv23_SAFMN.pptx)] <br> -->
+<!-- [[Poster](https://github.com/sunny2109/SAFMN/blob/main/figs/poster_iccv23_SAFMN.pptx)] <br> -->
 
 > [Mingjun Zheng](https://github.com/sunny2109), [Long Sun](https://github.com/sunny2109), [Jiangxin Dong](https://scholar.google.com/citations?user=ruebFVEAAAAJ&hl=zh-CN&oi=ao), and [Jinshan Pan](https://jspan.github.io/) <br>
 > [IMAG Lab](https://imag-njust.net/), Nanjing University of Science and Technology
@@ -36,6 +36,8 @@ pip install -r requirements.txt
 python setup.py develop
 ```
 You can also refer to this [INSTALL.md](https://github.com/XPixelGroup/BasicSR/blob/master/docs/INSTALL.md) for installation
+### Data Preparation
+Please refer to [datasets/REDAME.md](datasets\README.md) for  data preparation.
 
 ### Training
 Run the following commands for training:
@@ -44,10 +46,10 @@ Run the following commands for training:
 # train SMFANet for x4 effieicnt SR
 python basicsr/train.py -opt options/train/SMFANet/SMFANet_DIV2K_100w_x4SR.yml
 # train SMFANet+ for x4 effieicnt SR
-python basicsr/train.py -opt options/train/SMFANet/SMFANet_plus_DIV2K_100w_x4SR
+python basicsr/train.py -opt options/train/SMFANet/SMFANet_plus_DIV2K_100w_x4SR.yml
 ```
 ### Testing 
-- Download the testing dataset.
+- Download the testing dataset. 
 - The pretrained models are in './pretrain'.
 - Run the following commands:
 ```
@@ -57,7 +59,8 @@ python basicsr/test.py -opt options/test/SAFMN/test_benchmark_x4.yml
 - The test results will be in './results'.
 
 ### TensorRT Optimization
-- The code for TensorRT export is available at /to_tensorrt
+- The code for TensorRT export is available at [to_tensorrt/READEME.md](to_tensorrt\README.md)
+
 
 ### Visual Results
 - **Download Visual Results** 

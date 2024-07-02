@@ -41,7 +41,7 @@ python setup.py develop
 ```
 You can also refer to this [INSTALL.md](https://github.com/XPixelGroup/BasicSR/blob/master/docs/INSTALL.md) for installation
 ### Data Preparation
-Please refer to [datasets/REDAME.md](datasets/README.md) for  data preparation.
+Please refer to [datasets/REDAME.md](datasets/README.md) for data preparation.
 
 ### Training
 Run the following commands for training:
@@ -58,7 +58,7 @@ python basicsr/train.py -opt options/train/SMFANet/SMFANet_plus_DIV2K_100w_x4SR.
 - Run the following commands:
 ```
 # test SMFANet for x4 efficient SR
-python basicsr/test.py -opt options/test/SAFMN/test_benchmark_x4.yml
+python basicsr/test.py -opt options/test/SMFANet_DF2K_x2SR.yml
 ```
 - The test results will be in './results'.
 

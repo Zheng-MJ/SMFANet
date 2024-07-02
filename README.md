@@ -84,7 +84,6 @@ python basicsr/test.py -opt options/test/SAFMN/test_benchmark_x4.yml
 
  
 
-<!-- 
 ### Citation
 If this work is helpful for your research, please consider citing the following BibTeX entry.
 ```
@@ -94,7 +93,7 @@ If this work is helpful for your research, please consider citing the following 
     booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
     year={2024}
  }
- ``` -->
+ ```
 
 
 ### Acknowledgement

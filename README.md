@@ -1,4 +1,4 @@
-### 📖 SMFANet: A Lightweight Self-Modulation Feature Aggregation Network for Efficient Image Super-Resolution
+# 📖 SMFANet: A Lightweight Self-Modulation Feature Aggregation Network for Efficient Image Super-Resolution
 
 [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/Meloo/SMFANet/tree/main)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Zheng-MJ/SMFANet)

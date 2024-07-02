@@ -1,4 +1,4 @@
-### 📖 SMFANet: A Lightweight Self-Modulation Feature Aggregation Network for Efficient Image Super-Resolution
+# 📖 SMFANet: A Lightweight Self-Modulation Feature Aggregation Network for Efficient Image Super-Resolution
 
 [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/Meloo/SMFANet/tree/main)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Zheng-MJ/SMFANet)
@@ -17,6 +17,10 @@
 
 ***Network architecture of the proposed SMFANet**. The proposed s SMFANet consists of a shallow feature extraction module, feature modulation blocks, and a lightweight image reconstruction module. Feature modulation block contains one self-modulation feature aggregation (SMFA) module and one partial convolution-based feed-forward network (PCFN).*
  
+---
+### News
+- [2024-07-01] Our SAFMN is accepted to ECCV 2024.
+- [2024-06-25] The SMFANet placed 2nd and 3rd in the Parameters and FLOPs sub-track of the NTIRE2024 ESR Challenge.
 ---
 ### Requirements
 > - Python 3.8, PyTorch >= 1.8
@@ -78,12 +82,11 @@ python basicsr/test.py -opt options/test/SAFMN/test_benchmark_x4.yml
 - **Visual comparisons for x4 SR on the Urban100 dataset**
 <img width="800" src="./figs/visual_results.png">
 
-
 - **Comparison of local attribution maps (LAMs) and diffusion indices (DIs)**
 <img width="800" src="./figs/LAM_results.png">
 
- 
-
+- **The power spectral density (PSD) visualizations of feature $F_{in}$, $X_l$, $Y_d$.**
+<img width="800" src="./figs/FFT_results.png">
 ### Citation
 If this work is helpful for your research, please consider citing the following BibTeX entry.
 ```

@@ -20,7 +20,7 @@
 ---
 ### News
 - [2024-07-01] Our SMFANet is accepted to ECCV 2024.
-- [2024-06-25] The SMFANet placed 2nd and 3rd in the Parameters and FLOPs sub-track of the NTIRE2024 ESR Challenge.
+- [2024-06-25] Our SMFANet placed 2nd and 3rd in the Parameters and FLOPs sub-track of the NTIRE2024 ESR.
 ---
 ### Requirements
 > - Python 3.8, PyTorch >= 1.8

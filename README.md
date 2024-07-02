@@ -37,7 +37,7 @@ python setup.py develop
 ```
 You can also refer to this [INSTALL.md](https://github.com/XPixelGroup/BasicSR/blob/master/docs/INSTALL.md) for installation
 ### Data Preparation
-Please refer to [datasets/REDAME.md](datasets\README.md) for  data preparation.
+Please refer to [datasets/REDAME.md](datasets/README.md) for  data preparation.
 
 ### Training
 Run the following commands for training:
@@ -59,7 +59,7 @@ python basicsr/test.py -opt options/test/SAFMN/test_benchmark_x4.yml
 - The test results will be in './results'.
 
 ### TensorRT Optimization
-- The code for TensorRT export is available at [to_tensorrt/READEME.md](to_tensorrt\README.md)
+- The code for TensorRT export is available at [to_tensorrt/READEME.md](to_tensorrt/README.md)
 
 
 ### Visual Results

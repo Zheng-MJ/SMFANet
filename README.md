@@ -30,10 +30,11 @@
 ### Installation
 ```
 # Clone the repo
-git clone https://github.com/Zheng-MJ/SMFANet
+git clone https://github.com/Zheng-MJ/SMFANet.git
 # Install dependent packages
 cd SMFANet
 conda create --name smfan python=3.8
+conda activate smfan
 pip install -r requirements.txt
 # Install BasicSR
 python setup.py develop

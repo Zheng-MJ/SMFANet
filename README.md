@@ -88,6 +88,7 @@ python basicsr/test.py -opt options/test/SMFANet_DF2K_x2SR.yml
 
 - **The power spectral density (PSD) visualizations of feature**
 <img width="800" src="./figs/FFT_results.png">
+
 ### Citation
 If this work is helpful for your research, please consider citing the following BibTeX entry.
 

@@ -1,6 +1,6 @@
-name: SAFMNet_train_DIV2K_100w_x4SR
+name: SAFMNet_train_DIV2K_100w_x3SR
 model_type: SRModel
-scale: 4
+scale: 3
 num_gpu: auto  # set num_gpu: 0 for cpu mode
 manual_seed: 10
 
@@ -10,12 +10,12 @@ datasets:
     name: DIV2K
     type: PairedImageDataset
     dataroot_gt: /datasets/DIV2K/DIV2K_train_HR_sub
-    dataroot_lq: /datasets/DIV2K/DIV2K_train_LR_bicubic/X4_sub
+    dataroot_lq: /datasets/DIV2K/DIV2K_train_LR_bicubic/X3_sub
     filename_tmpl: '{}'
     io_backend:
       type: disk
 
-    gt_size: 256
+    gt_size: 192
     use_hflip: true
     use_rot: true
 
@@ -30,8 +30,8 @@ datasets:
     name: Set5
     type: PairedImageDataset
     dataroot_gt: /datasets/Set5/HR
-    dataroot_lq: /datasets/Set5/LR_bicubic/X4
-    filename_tmpl : "{}x4"
+    dataroot_lq: /datasets/Set5/LR_bicubic/X3
+    filename_tmpl : "{}x3"
     io_backend:
       type: disk
 
@@ -39,10 +39,10 @@ datasets:
 # network structures
 network_g:
   type: SMFANet
-  dim: 36
-  n_blocks: 8
+  dim: 48
+  n_blocks: 12
   ffn_scale: 2
-  upscaling_factor: 4
+  upscaling_factor: 3
 
 # path
 path:
@@ -88,12 +88,12 @@ val:
   metrics:
     psnr:
       type: calculate_psnr
-      crop_border: 4
+      crop_border: 3
       test_y_channel: true
       better: higher  # the higher, the better. Default: higher
     ssim:
       type: calculate_ssim
-      crop_border: 4
+      crop_border: 3
       test_y_channel: true
       better: higher  # the higher, the better. Default: higher
 

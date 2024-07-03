@@ -1,4 +1,3 @@
-#ModleName_train/test/fine_dataset_gtsize_batchsize_setting_loss_lr
 name: SAFMNet_plus_train_DIV2K_100w_x4SR
 model_type: SRModel
 scale: 4
@@ -27,7 +26,6 @@ datasets:
     dataset_enlarge_ratio: 10
     prefetch_mode: ~
 
-  # we use multiple validation datasets. The SR benchmark datasets can be download from: https://cv.snu.ac.kr/research/EDSR/benchmark.tar
   val:
     name: Set5
     type: PairedImageDataset

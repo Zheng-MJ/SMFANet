@@ -18,5 +18,5 @@ python export_tensorrt.py
 ### Use the inference script
 ```
 cd to_tensorrt
-python inference_tensorrt
+python inference_tensorrt.py
 ```

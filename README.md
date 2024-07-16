@@ -21,7 +21,7 @@
 ---
 ### News
 - [2024-07-16] The paper is available [Here](assets/SMFANet.pdf).
-- [2024-07-16] Add 🤗[Demo](https://huggingface.co/spaces/zheng-MJ/SMFANet).
+- [2024-07-16] we add 🤗[Hugging Face Demo](https://huggingface.co/spaces/zheng-MJ/SMFANet).
 - [2024-07-01] Our SMFANet is accepted by ECCV 2024.
 - [2024-06-25] Our SMFANet places 2nd and 3rd in the Parameters and FLOPs sub-track of the [NTIRE2024 ESR](https://github.com/Zheng-MJ/NTIRE2024-ESR-SMFAN).
 ---
@@ -71,6 +71,9 @@ python basicsr/test.py -opt options/test/SMFANet_DF2K_x2SR.yml
 
 ### TensorRT Optimization
 - The script for exporting TensorRT model is available at [to_tensorrt/READEME.md](to_tensorrt/README.md)
+
+### Hugging Face Demo
+- The Hugging Face Demo is available [here](https://huggingface.co/spaces/zheng-MJ/SMFANet).
 
 
 ### Experimental Results

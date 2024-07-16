@@ -99,7 +99,7 @@ If this work is helpful for your research, please consider citing the following 
 @inproceedings{smfanet,
     title={SMFANet: A Lightweight Self-Modulation Feature Aggregation Network for Efficient Image Super-Resolution},
     author={Zheng, Mingjun and Sun, Long and Dong, Jiangxin and Pan, Jinshan},
-    booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
+    booktitle={ECCV},
     year={2024}
  }
  ```

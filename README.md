@@ -21,7 +21,7 @@
 ---
 ### News
 - [2024-07-16]: The paper is available [Here](assets/SMFANet.pdf).
-- [2024-07-16]: Added 🤗[Demo](https://huggingface.co/spaces/zheng-MJ/SMFANet).
+- [2024-07-16]: Add 🤗[Demo](https://huggingface.co/spaces/zheng-MJ/SMFANet).
 - [2024-07-01] Our SMFANet is accepted by ECCV 2024.
 - [2024-06-25] Our SMFANet places 2nd and 3rd in the Parameters and FLOPs sub-track of the [NTIRE2024 ESR](https://github.com/Zheng-MJ/NTIRE2024-ESR-SMFAN).
 ---

@@ -18,6 +18,10 @@ def feature_show(x, name, save_dir = "plt/psd", psd = True):
 
     plt.imshow(x , cmap='jet')
     plt.colorbar()
+
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    
     plt.savefig(os.path.join(save_dir, name), dpi=200)
     plt.close()
 

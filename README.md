@@ -57,7 +57,6 @@ python basicsr/train.py -opt options/train/SMFANet/SMFANet_plus_DIV2K_100w_x4SR.
 ```
 ### Testing 
 - Download the testing dataset. 
-- The pretrained models are in './pretrain'.
 - Run the following commands:
 ```
 # test SMFANet for x4 efficient SR

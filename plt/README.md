@@ -10,6 +10,11 @@ To execute the feature visualization, run the following command:
 python main_psd.py
 ```
 
+To generate the effective receptive field (ERF) of the model, prepare the test images, and run the following command:
+```
+python main_erf.py --data_dir datasets/Benchmarks/Urban100/LR_bicubic/X4
+```
+
 ### Chart Plotting
 To generate a comprehensive performance comparison chart, execute the following command:
 ```

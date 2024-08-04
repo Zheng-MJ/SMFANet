@@ -116,7 +116,9 @@ class SMFANet(nn.Module):
         return x
 
 def img_read(path):
+    print("read :", path)
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    assert img is not None
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return torch.from_numpy(np.ascontiguousarray(img)).permute(2, 0, 1).float().div(255.).unsqueeze(0)
     
@@ -130,13 +132,10 @@ def main(args):
         model(img)
 
 if __name__ == "__main__":
-    
     parser = argparse.ArgumentParser("PSD")
     parser.add_argument("--img_dir", default = os.path.join('assets', '0862.png'), type = str)
     args = parser.parse_args()
     main(args)
-
-    main()
 
 
 

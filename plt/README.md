@@ -16,4 +16,5 @@ To generate a comprehensive performance comparison chart, execute the following 
 python main_complexity.py
 python main_efficiency.py
 ```
+Need to use the PDF editor to adjust the positioning of the text within the chart.
 

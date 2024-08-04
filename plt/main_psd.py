@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import os
 import cv2
 import numpy as np
+import argparse
 from feature_show import feature_show
 
 class DMlp(nn.Module):
@@ -14,7 +15,7 @@ class DMlp(nn.Module):
             nn.Conv2d(dim,hidden_dim,3,1,1,groups=dim),
             nn.Conv2d(hidden_dim,hidden_dim,1,1,0)
         )
-        self.act =nn.GELU()
+        self.act = nn.GELU()
         self.conv_1 = nn.Conv2d(hidden_dim, dim, 1, 1, 0)
 
     def forward(self, x):
@@ -70,19 +71,14 @@ class SMFA(nn.Module):
         self.belt = nn.Parameter(torch.zeros((1,dim,1,1)))
 
     def forward(self, f):
-        
         feature_show(f, f"{self.id}_input")
-
         _,_,h,w = f.shape
 
         y, x = self.linear_0(f).chunk(2, dim=1)
-
         x_s = self.dw_conv(F.adaptive_max_pool2d(x, (h // self.down_scale, w // self.down_scale)))
         x_v = torch.var(x, dim=(-2,-1), keepdim=True)
         x_l = x * F.interpolate(self.gelu(self.linear_1(x_s * self.alpha + x_v * self.belt)), size=(h,w), mode='nearest')
-
         y_d = self.lde(y)
-
         out = self.linear_2(x_l + y_d)
 
         feature_show(x_l, f"{self.id}_easa")
@@ -124,16 +120,22 @@ def img_read(path):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return torch.from_numpy(np.ascontiguousarray(img)).permute(2, 0, 1).float().div(255.).unsqueeze(0)
     
-def main():
+def main(args):
     model = SMFANet(dim=48, n_blocks=12, upscaling_factor= 4).eval().cuda()
     model_path = os.path.join('pretrain', 'SMFANet_plus_DF2K_100w_x4SR.pth')
     model.load_state_dict(torch.load(model_path)['params'], strict=True)
 
     with torch.no_grad():
-        img = img_read(os.path.join('plt', '0862.png')).cuda()
+        img = img_read(args.img_dir).cuda()
         model(img)
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser("PSD")
+    parser.add_argument("--img_dir", default = os.path.join('plt', '0862.png'), type = str)
+    args = parser.parse_args()
+    main(args)
+
     main()
 
 

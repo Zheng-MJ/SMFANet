@@ -15,7 +15,7 @@ To visualize the local attribution map (LAM), run the following command:
 python main_lam.py 
 ```
 
-To generate the effective receptive field (ERF) of the model, prepare the test images, and run the following command:
+To generate the effective receptive field (ERF), prepare the test images, and run the following command:
 ```
 python main_erf.py --data_dir datasets/Benchmarks/Urban100/LR_bicubic/X4
 ```

@@ -20,6 +20,7 @@
  
 ---
 ### News
+- [2024-08-04] We add the scripts for [feature visualization and chart plotting](plt/README.md). 
 - [2024-07-16] The paper is available [Here](assets/SMFANet.pdf).
 - [2024-07-16] We add 🤗[Hugging Face Demo](https://huggingface.co/spaces/zheng-MJ/SMFANet).
 - [2024-07-01] Our SMFANet is accepted by ECCV 2024.
@@ -74,6 +75,8 @@ python basicsr/test.py -opt options/test/SMFANet_DF2K_x2SR.yml
 ### Hugging Face Demo
 - The Hugging Face Demo is available [here](https://huggingface.co/spaces/zheng-MJ/SMFANet).
 
+### Plotting Script
+- The script for feature visualization and chart plotting is available at [plt/README.md](plt/README.md).
 
 ### Experimental Results
 - **Comparison with CNN-based lightweight SR methods**

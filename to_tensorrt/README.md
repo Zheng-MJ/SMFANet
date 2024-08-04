@@ -1,5 +1,5 @@
 ### Export TensorRT
-The following procedures are used to generate our TensorRT models.
+- The following procedures are used to generate our TensorRT models.
 
 ### Requirements
 > - PyTorch 2.3.1, cuda-121

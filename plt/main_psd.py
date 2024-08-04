@@ -132,7 +132,7 @@ def main(args):
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser("PSD")
-    parser.add_argument("--img_dir", default = os.path.join('plt', '0862.png'), type = str)
+    parser.add_argument("--img_dir", default = os.path.join('assets', '0862.png'), type = str)
     args = parser.parse_args()
     main(args)
 

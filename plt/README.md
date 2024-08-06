@@ -32,6 +32,9 @@ Use the PDF editor to adjust text position in the chart.
 
 To calculate the model complexity with the fvcore library, run the following command 
 ```
+# install dependent package
+pip install fvcore
+# run the script
 python main_flops.py 
 ```
 FLOPs is measured corresponding to an HR image of the size 1280×720 pixels.

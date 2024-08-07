@@ -9,7 +9,7 @@ import os
 import cv2
 import torch
 import torchvision
-from basicsr.archs.SMFANet_arch import SMFANet
+from models.SMFANet import SMFANet
 
 def PIL2Tensor(pil_image):
     return torchvision.transforms.functional.to_tensor(pil_image)

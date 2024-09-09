@@ -61,7 +61,7 @@ python basicsr/train.py -opt options/train/SMFANet/SMFANet_plus_DIV2K_100w_x4SR.
 - Run the following commands:
 ```
 # test SMFANet for x4 efficient SR
-python basicsr/test.py -opt options/test/SMFANet_DF2K_x2SR.yml
+python basicsr/test.py -opt options/test/SMFANet_DF2K_x4SR.yml
 ```
 - The test results will be in './results'.
 

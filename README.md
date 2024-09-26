@@ -4,8 +4,8 @@
 [![Hugging Face Demo](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demos-blue)](https://huggingface.co/spaces/zheng-MJ/SMFANet)
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Zheng-MJ/SMFANet)
 [![GitHub Stars](https://img.shields.io/github/stars/Zheng-MJ/SMFANet?style=social)](https://github.com/Zheng-MJ/SMFANet) <br>
-> [[Paper](assets/SMFANet.pdf)] &emsp;
-[[Supp](assets/SMFANet-supp.pdf)]  &emsp;
+> [[Paper](https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/06713.pdf)] &emsp;
+[[Supp](https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/06713-supp.pdf)]  &emsp;
 
 > [Mingjun Zheng](https://github.com/Zheng-MJ), [Long Sun](https://github.com/sunny2109), [Jiangxin Dong](https://scholar.google.com/citations?user=ruebFVEAAAAJ&hl=zh-CN&oi=ao), and [Jinshan Pan](https://jspan.github.io/) <br>
 > [IMAG Lab](https://imag-njust.net/), Nanjing University of Science and Technology

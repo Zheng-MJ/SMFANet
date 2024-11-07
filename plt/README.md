@@ -30,7 +30,8 @@ python main_efficiency.py
 ```
 Use the PDF editor to adjust text position in the chart.
 
-To calculate the model complexity with the fvcore library, run the following command 
+### Flops and Run Time
+To calculate the model complexity and run time, run the following command 
 ```
 # install dependent package
 pip install fvcore
